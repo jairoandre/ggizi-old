@@ -1,0 +1,58 @@
+.jumbotron {
+  margin: 40px 0 80px 0;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 55px;
+    line-height: 1;
+  }
+
+  .lead {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+.marketing {
+  .row {
+    margin-bottom: 10px;
+  }
+
+  .row:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 [class*=" icon-"], h4 [class^="icon-"] {
+    margin-right: 5px;
+    vertical-align: -10%;
+    font-size: 28px;
+    line-height: 1;
+  }
+}
+
+.animate-if.ng-enter, .animate-if.ng-leave {
+  -webkit-transition: 1s linear all;
+  -moz-transition: 1s linear all;
+  -ms-transition: 1s linear all;
+  -o-transition: 1s linear all;
+  transition: 1s linear all;
+}
+
+
+.animate-if.ng-enter {
+  opacity: 0;
+}
+
+.animate-if.ng-enter.ng-enter-active, .animate-if.ng-leave {
+  opacity: 1;
+}
+
+.animate-if.ng-leave.ng-leave-active {
+  opacity: 1;
+}

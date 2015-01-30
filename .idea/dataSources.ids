@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - dash@localhost" uuid="e914b4c8-e2dd-4008-b1ff-fd788877d7f0">
+    <database-info product="MySQL" version="5.6.22" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="dash"/>
+    <table name="analytics_metric" schema="" catalog="dash" type="TABLE">
+      <column name="query" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="period" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="value" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="query"/>
+    </table>
+    <table name="analytics_profile" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="profile_region_fk" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="profile_region_fk" unique="false" columns="region_id"/>
+    </table>
+    <table name="brand" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="enterprise_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="brand_enterprise_fk" columns="enterprise_id" ref-table="enterprise" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="page_brand_fk" table="facebook_page" schema="" catalog="dash" columns="brand_id"/>
+      <exported-key name="FK_pj6m3ct34gg9vx1p99wjp084q" table="upload_data" schema="" catalog="dash" columns="brand_id"/>
+      <index name="brand_enterprise_fk" unique="false" columns="enterprise_id"/>
+    </table>
+    <table name="campaign" schema="" catalog="dash" type="TABLE">
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="name"/>
+      <exported-key name="FK_dj1jndwpdo4vv6cl305npaokb" table="upload_data" schema="" catalog="dash" columns="campaign_name"/>
+    </table>
+    <table name="channel" schema="" catalog="dash" type="TABLE">
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="name"/>
+      <exported-key name="FK_gd4wlp8728tcgnrwr39gfd8pw" table="cost_per_click" schema="" catalog="dash" columns="channel_id"/>
+      <exported-key name="FK_n0n0qltb3dbm0c6rj99gp4rjc" table="cost_per_mille" schema="" catalog="dash" columns="channel_id"/>
+      <exported-key name="FK_qo95aioey6g96ikdk8y0eb54c" table="cost_per_view" schema="" catalog="dash" columns="channel_id"/>
+    </table>
+    <table name="comscore_brand" schema="" catalog="dash" type="TABLE">
+      <column name="comscore_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="comscore_id"/>
+      <exported-key name="FK_quas1tnfyh6n2gka38lbs0jkj" table="comscore_metric" schema="" catalog="dash" columns="brand_comscore_id"/>
+    </table>
+    <table name="comscore_metric" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="time_on_site" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="unique_visitors" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="brand_comscore_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="timePeriod_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_quas1tnfyh6n2gka38lbs0jkj" columns="brand_comscore_id" ref-table="comscore_brand" ref-schema="" ref-catalog="dash" ref-columns="comscore_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_rouh81t03as0vvvdoagethyu9" columns="timePeriod_id" ref-table="comscore_timeperiod" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_quas1tnfyh6n2gka38lbs0jkj" unique="false" columns="brand_comscore_id"/>
+      <index name="FK_rouh81t03as0vvvdoagethyu9" unique="false" columns="timePeriod_id"/>
+    </table>
+    <table name="comscore_region" schema="" catalog="dash" type="TABLE">
+      <column name="comscore_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="comscore_id"/>
+      <exported-key name="FK_cq4a2nf6wpkviaabmhakd9km7" table="comscore_timeperiod" schema="" catalog="dash" columns="region_id"/>
+    </table>
+    <table name="comscore_timeperiod" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="comscore_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="synchronized_status" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="region_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_cq4a2nf6wpkviaabmhakd9km7" columns="region_id" ref-table="comscore_region" ref-schema="" ref-catalog="dash" ref-columns="comscore_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_rouh81t03as0vvvdoagethyu9" table="comscore_metric" schema="" catalog="dash" columns="timePeriod_id"/>
+      <index name="FK_cq4a2nf6wpkviaabmhakd9km7" unique="false" columns="region_id"/>
+    </table>
+    <table name="cost_per_click" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="ctr" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="conversion_rate" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="conversions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="delivered_clicks" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="delivered_impressions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="investment" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="media_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="upload_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_7uqdqccnp2gvw2cvnljw8766i" columns="upload_id" ref-table="upload_data" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_9ob7lo66aloe6sgqfilbryix3" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_gd4wlp8728tcgnrwr39gfd8pw" columns="channel_id" ref-table="channel" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_nyeh08jw8ndnybf4wy435eh51" columns="media_id" ref-table="media" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_7uqdqccnp2gvw2cvnljw8766i" unique="false" columns="upload_id"/>
+      <index name="FK_9ob7lo66aloe6sgqfilbryix3" unique="false" columns="region_id"/>
+      <index name="FK_gd4wlp8728tcgnrwr39gfd8pw" unique="false" columns="channel_id"/>
+      <index name="FK_nyeh08jw8ndnybf4wy435eh51" unique="false" columns="media_id"/>
+    </table>
+    <table name="cost_per_mille" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="ctr" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="conversion_rate" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="conversions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="delivered_clicks" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="delivered_impressions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="investment" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="media_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="upload_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_3fm3d8fsa735vtm4o3p4xfh6m" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_6fj8u33tqewc5qlblhhvah0je" columns="media_id" ref-table="media" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_dypfejj31rndboq0s8k7gkrm9" columns="upload_id" ref-table="upload_data" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_n0n0qltb3dbm0c6rj99gp4rjc" columns="channel_id" ref-table="channel" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_3fm3d8fsa735vtm4o3p4xfh6m" unique="false" columns="region_id"/>
+      <index name="FK_6fj8u33tqewc5qlblhhvah0je" unique="false" columns="media_id"/>
+      <index name="FK_dypfejj31rndboq0s8k7gkrm9" unique="false" columns="upload_id"/>
+      <index name="FK_n0n0qltb3dbm0c6rj99gp4rjc" unique="false" columns="channel_id"/>
+    </table>
+    <table name="cost_per_view" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="conversion_rate" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="conversions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="delivered_impressions" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="investment" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="view_rate" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="views" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="media_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="upload_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_c545k5rcqt3kv9ayhavrkt7n0" columns="media_id" ref-table="media" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_kg1vpwnvl79lmpisqv5bs537m" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_l8h5pgmqgh522klpf1sa4fuqd" columns="upload_id" ref-table="upload_data" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_qo95aioey6g96ikdk8y0eb54c" columns="channel_id" ref-table="channel" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_c545k5rcqt3kv9ayhavrkt7n0" unique="false" columns="media_id"/>
+      <index name="FK_kg1vpwnvl79lmpisqv5bs537m" unique="false" columns="region_id"/>
+      <index name="FK_l8h5pgmqgh522klpf1sa4fuqd" unique="false" columns="upload_id"/>
+      <index name="FK_qo95aioey6g96ikdk8y0eb54c" unique="false" columns="channel_id"/>
+    </table>
+    <table name="crossmarket_cache" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="day" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="dayPercent" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="metric" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="month" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="monthPercent" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="week" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="weekPercent" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="year" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="yearPercent" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="dash_container" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="disposition" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_number" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="template" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="page_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="js" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_6087nf261j366ojyqh270sisu" columns="page_id" ref-table="dash_page" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_3xkl8rq8tqwwc0oqc7r9rkbwt" table="dash_widget_wrapper" schema="" catalog="dash" columns="container_id"/>
+      <index name="FK_6087nf261j366ojyqh270sisu" unique="false" columns="page_id"/>
+    </table>
+    <table name="dash_dashboard" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="css" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="header" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="js" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_b6996x3x5e3kous3h7kvky4j3" table="dash_page" schema="" catalog="dash" columns="dashboard_id"/>
+    </table>
+    <table name="dash_datasource" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="source" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_3gjuh587vi9dsiefcmpieytqt" table="dash_widget_wrapper" schema="" catalog="dash" columns="datasource_id"/>
+    </table>
+    <table name="dash_filter" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="css" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="html" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="js" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_q67bxr42gwwp849n94mblib3q" table="dash_filter_component_wrapper" schema="" catalog="dash" columns="filter_id"/>
+      <exported-key name="FK_8kt5hr0m2dbygtb676spljys3" table="dash_page" schema="" catalog="dash" columns="filter_id"/>
+    </table>
+    <table name="dash_filter_component" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="css" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="html" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="js" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_ryby6b1y70k3wv5ax12v0hiky" table="dash_filter_component_wrapper" schema="" catalog="dash" columns="filter_component_id"/>
+    </table>
+    <table name="dash_filter_component_wrapper" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="order_number" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="filter_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="filter_component_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_q67bxr42gwwp849n94mblib3q" columns="filter_id" ref-table="dash_filter" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_ryby6b1y70k3wv5ax12v0hiky" columns="filter_component_id" ref-table="dash_filter_component" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_r915s8nw290homuv7fe3q8dej" table="dash_parameter" schema="" catalog="dash" columns="filter_component_wrapper_id"/>
+      <index name="FK_q67bxr42gwwp849n94mblib3q" unique="false" columns="filter_id"/>
+      <index name="FK_ryby6b1y70k3wv5ax12v0hiky" unique="false" columns="filter_component_id"/>
+    </table>
+    <table name="dash_page" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="html" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_number" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="dashboard_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="filter_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="active" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_8kt5hr0m2dbygtb676spljys3" columns="filter_id" ref-table="dash_filter" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_b6996x3x5e3kous3h7kvky4j3" columns="dashboard_id" ref-table="dash_dashboard" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_6087nf261j366ojyqh270sisu" table="dash_container" schema="" catalog="dash" columns="page_id"/>
+      <exported-key name="FK_58mvtfepy89jtl0eedbv2r2rb" table="user_page" schema="" catalog="dash" columns="dash_page_id"/>
+      <index name="FK_8kt5hr0m2dbygtb676spljys3" unique="false" columns="filter_id"/>
+      <index name="FK_b6996x3x5e3kous3h7kvky4j3" unique="false" columns="dashboard_id"/>
+    </table>
+    <table name="dash_parameter" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="value" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="widget_wrapper_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="filter_component_wrapper_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_2yx8vhbaclts68j0ca3qnjksn" columns="widget_wrapper_id" ref-table="dash_widget_wrapper" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_r915s8nw290homuv7fe3q8dej" columns="filter_component_wrapper_id" ref-table="dash_filter_component_wrapper" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_2yx8vhbaclts68j0ca3qnjksn" unique="false" columns="widget_wrapper_id"/>
+      <index name="FK_r915s8nw290homuv7fe3q8dej" unique="false" columns="filter_component_wrapper_id"/>
+    </table>
+    <table name="dash_widget" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="columns" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="css" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="html" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="js" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_q0l0qa7tg9r7qfh7i438yh94g" table="dash_widget_wrapper" schema="" catalog="dash" columns="widget_id"/>
+    </table>
+    <table name="dash_widget_wrapper" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="columns" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="order_number" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="url" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="datasource_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="widget_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="container_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_3gjuh587vi9dsiefcmpieytqt" columns="datasource_id" ref-table="dash_datasource" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_3xkl8rq8tqwwc0oqc7r9rkbwt" columns="container_id" ref-table="dash_container" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_q0l0qa7tg9r7qfh7i438yh94g" columns="widget_id" ref-table="dash_widget" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_2yx8vhbaclts68j0ca3qnjksn" table="dash_parameter" schema="" catalog="dash" columns="widget_wrapper_id"/>
+      <index name="FK_3gjuh587vi9dsiefcmpieytqt" unique="false" columns="datasource_id"/>
+      <index name="FK_3xkl8rq8tqwwc0oqc7r9rkbwt" unique="false" columns="container_id"/>
+      <index name="FK_q0l0qa7tg9r7qfh7i438yh94g" unique="false" columns="widget_id"/>
+    </table>
+    <table name="enterprise" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="brand_enterprise_fk" table="brand" schema="" catalog="dash" columns="enterprise_id"/>
+    </table>
+    <table name="facebook_manager" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_dvukirv8iuupmhl30qtrkohk5" table="facebook_page" schema="" catalog="dash" columns="manager_id"/>
+    </table>
+    <table name="facebook_page" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="access_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="brand_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="manager_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_dvukirv8iuupmhl30qtrkohk5" columns="manager_id" ref-table="facebook_manager" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="page_brand_fk" columns="brand_id" ref-table="brand" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="page_region_fk" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="facebook_page_metric_page_fk" table="facebook_page_metric" schema="" catalog="dash" columns="page_id"/>
+      <exported-key name="page_id" table="facebook_page_post" schema="" catalog="dash" columns="page_id"/>
+      <index name="FK_dvukirv8iuupmhl30qtrkohk5" unique="false" columns="manager_id"/>
+      <index name="page_brand_fk" unique="false" columns="brand_id"/>
+      <index name="page_region_fk" unique="false" columns="region_id"/>
+    </table>
+    <table name="facebook_page_metric" schema="" catalog="dash" type="TABLE">
+      <column name="capture" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="metric" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="page_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="daily" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="life_time" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="metric_type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="monthly" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="weekly" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="ytd" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="capture,metric,page_id"/>
+      <foreign-key name="facebook_page_metric_page_fk" columns="page_id" ref-table="facebook_page" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="facebook_page_metric_page_fk" unique="false" columns="page_id"/>
+    </table>
+    <table name="facebook_page_post" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="comments_count" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="created_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="likes_count" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="shares_count" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="page_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="link" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="updated_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="page_id" columns="page_id" ref-table="facebook_page" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="instagram_campaigns" schema="" catalog="dash" type="TABLE">
+      <column name="media_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="campaign" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="instagram_media" schema="" catalog="dash" type="TABLE">
+      <column name="media_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="instagram_profile_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="media_type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="link" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="caption" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="media_id"/>
+    </table>
+    <table name="instagram_metrics" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="instagram_media_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="metric" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="granulatiry" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="value" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="captured_at" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="instagram_profiles" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="brand_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="access_token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="index_instagram_profiles_on_brand_id" unique="false" columns="brand_id"/>
+      <index name="index_instagram_profiles_on_region_id" unique="false" columns="region_id"/>
+    </table>
+    <table name="media" schema="" catalog="dash" type="TABLE">
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="name"/>
+      <exported-key name="FK_nyeh08jw8ndnybf4wy435eh51" table="cost_per_click" schema="" catalog="dash" columns="media_id"/>
+      <exported-key name="FK_6fj8u33tqewc5qlblhhvah0je" table="cost_per_mille" schema="" catalog="dash" columns="media_id"/>
+      <exported-key name="FK_c545k5rcqt3kv9ayhavrkt7n0" table="cost_per_view" schema="" catalog="dash" columns="media_id"/>
+    </table>
+    <table name="oauth_application" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="redirect_uri" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="social" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="oauth_authorization" schema="" catalog="dash" type="TABLE">
+      <column name="social" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="access_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="auth_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="refresh_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="social"/>
+    </table>
+    <table name="profile" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="label" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="role" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_dnnx1gqmln4no0py3hn5fy334" table="user_profile" schema="" catalog="dash" columns="profile_id"/>
+    </table>
+    <table name="region" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="image" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="label" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="acronym" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="active" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MQ=="/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_4qbq1xpfry58851kvtg6tuw3e" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="profile_region_fk" table="analytics_profile" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_9ob7lo66aloe6sgqfilbryix3" table="cost_per_click" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_3fm3d8fsa735vtm4o3p4xfh6m" table="cost_per_mille" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_kg1vpwnvl79lmpisqv5bs537m" table="cost_per_view" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="page_region_fk" table="facebook_page" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_4qbq1xpfry58851kvtg6tuw3e" table="region" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_1arq9qihyqeipdu5mt5rl0mol" table="social_metrix_brand_opinion" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_e2txicifslb67b5sji029ah44" table="social_metrix_campaign_opinion" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_nptrrr39dv7dc39aucw0ws0av" table="social_metrix_product_feature_opinion" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_46oggypja2929va2g7lt244b8" table="social_metrix_product_opinion" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="FK_8nj63ktn59gcfo974ad4nu8cf" table="social_metrix_topic_opinion" schema="" catalog="dash" columns="region_id"/>
+      <exported-key name="twitter_profile_ibfk_1" table="twitter_profile" schema="" catalog="dash" columns="region_fk"/>
+      <exported-key name="FK_hql0m5b9c4cje0fht1sb8olvg" table="user_region" schema="" catalog="dash" columns="region_id"/>
+      <index name="FK_4qbq1xpfry58851kvtg6tuw3e" unique="false" columns="region_id"/>
+    </table>
+    <table name="schema_migrations" schema="" catalog="dash" type="TABLE">
+      <column name="version" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <index name="unique_schema_migrations" unique="true" columns="version"/>
+    </table>
+    <table name="social_metrix_brand_opinion" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sentiment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comment_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_1arq9qihyqeipdu5mt5rl0mol" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_dldx64v8jfvw7hu4h1pu9jn5r" columns="comment_id" ref-table="social_metrix_comment" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_1arq9qihyqeipdu5mt5rl0mol" unique="false" columns="region_id"/>
+      <index name="FK_dldx64v8jfvw7hu4h1pu9jn5r" unique="false" columns="comment_id"/>
+      <index name="idx_brand" unique="false" columns="brand"/>
+    </table>
+    <table name="social_metrix_campaign_opinion" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="campaign" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sentiment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comment_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_e2txicifslb67b5sji029ah44" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_mhgbqnj7x4pthpui3nvbf962b" columns="comment_id" ref-table="social_metrix_comment" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_e2txicifslb67b5sji029ah44" unique="false" columns="region_id"/>
+      <index name="FK_mhgbqnj7x4pthpui3nvbf962b" unique="false" columns="comment_id"/>
+    </table>
+    <table name="social_metrix_comment" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="author" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="publisher_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="social_network" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="source_user_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="source_user_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="text" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="url" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_dldx64v8jfvw7hu4h1pu9jn5r" table="social_metrix_brand_opinion" schema="" catalog="dash" columns="comment_id"/>
+      <exported-key name="FK_mhgbqnj7x4pthpui3nvbf962b" table="social_metrix_campaign_opinion" schema="" catalog="dash" columns="comment_id"/>
+      <exported-key name="FK_b15l275nqk29s37ktw1x0jwhg" table="social_metrix_product_feature_opinion" schema="" catalog="dash" columns="comment_id"/>
+      <exported-key name="FK_cskbpdw8jynhfh53h0gd837xp" table="social_metrix_product_opinion" schema="" catalog="dash" columns="comment_id"/>
+      <exported-key name="FK_jgjh66qvhn3vlspkpsbm75g3m" table="social_metrix_topic_opinion" schema="" catalog="dash" columns="comment_id"/>
+    </table>
+    <table name="social_metrix_product_feature_opinion" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="feature" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="product" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sentiment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comment_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_b15l275nqk29s37ktw1x0jwhg" columns="comment_id" ref-table="social_metrix_comment" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_nptrrr39dv7dc39aucw0ws0av" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_b15l275nqk29s37ktw1x0jwhg" unique="false" columns="comment_id"/>
+      <index name="FK_nptrrr39dv7dc39aucw0ws0av" unique="false" columns="region_id"/>
+    </table>
+    <table name="social_metrix_product_opinion" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="product" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sentiment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comment_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_46oggypja2929va2g7lt244b8" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_cskbpdw8jynhfh53h0gd837xp" columns="comment_id" ref-table="social_metrix_comment" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_46oggypja2929va2g7lt244b8" unique="false" columns="region_id"/>
+      <index name="FK_cskbpdw8jynhfh53h0gd837xp" unique="false" columns="comment_id"/>
+    </table>
+    <table name="social_metrix_topic_opinion" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="sentiment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="topic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comment_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_8nj63ktn59gcfo974ad4nu8cf" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_jgjh66qvhn3vlspkpsbm75g3m" columns="comment_id" ref-table="social_metrix_comment" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_8nj63ktn59gcfo974ad4nu8cf" unique="false" columns="region_id"/>
+      <index name="FK_jgjh66qvhn3vlspkpsbm75g3m" unique="false" columns="comment_id"/>
+    </table>
+    <table name="twitter_metric" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="MEDIUMINT" precision="7" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="twitter_profile_fk" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="daily" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="weekly" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="TYPE" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="DATE" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="life_time" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="twitter_metric_ibfk_1" columns="twitter_profile_fk" ref-table="twitter_profile" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="twitter_profile" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="NAME" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="consumer_key" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="consumer_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="access_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="access_token_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="region_fk" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="twitter_profile_ibfk_1" columns="region_fk" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="twitter_metric_ibfk_1" table="twitter_metric" schema="" catalog="dash" columns="twitter_profile_fk"/>
+    </table>
+    <table name="type" schema="" catalog="dash" type="TABLE">
+      <column name="onoff" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="upload_data" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="file_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="since" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="until" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="upload_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="brand_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="campaign_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_dj1jndwpdo4vv6cl305npaokb" columns="campaign_name" ref-table="campaign" ref-schema="" ref-catalog="dash" ref-columns="name" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_pj6m3ct34gg9vx1p99wjp084q" columns="brand_id" ref-table="brand" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="upload_data_user_id_fk" columns="user_id" ref-table="user" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_7uqdqccnp2gvw2cvnljw8766i" table="cost_per_click" schema="" catalog="dash" columns="upload_id"/>
+      <exported-key name="FK_dypfejj31rndboq0s8k7gkrm9" table="cost_per_mille" schema="" catalog="dash" columns="upload_id"/>
+      <exported-key name="FK_l8h5pgmqgh522klpf1sa4fuqd" table="cost_per_view" schema="" catalog="dash" columns="upload_id"/>
+      <index name="FK_dj1jndwpdo4vv6cl305npaokb" unique="false" columns="campaign_name"/>
+      <index name="FK_pj6m3ct34gg9vx1p99wjp084q" unique="false" columns="brand_id"/>
+      <index name="idx_upload_data_user_id" unique="false" columns="user_id"/>
+    </table>
+    <table name="user" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="active" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="createTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="updateTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="avatar" sqlType="LONGBLOB" precision="2147483647" scale="0" nullable="true" jdbcType="-4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="upload_data_user_id_fk" table="upload_data" schema="" catalog="dash" columns="user_id"/>
+      <exported-key name="FK_9jhmcrcy6ra4aut2m4tjnwitt" table="user_page" schema="" catalog="dash" columns="user_id"/>
+      <exported-key name="FK_ebc21hy5j7scdvcjt0jy6xxrv" table="user_profile" schema="" catalog="dash" columns="user_id"/>
+      <exported-key name="FK_amxwalpbhxbb381dn90iyjl2l" table="user_region" schema="" catalog="dash" columns="user_id"/>
+      <index name="UK_ob8kqyqqgmefl0aco34akdtpe" unique="true" columns="email"/>
+    </table>
+    <table name="user_page" schema="" catalog="dash" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="dash_page_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <foreign-key name="FK_58mvtfepy89jtl0eedbv2r2rb" columns="dash_page_id" ref-table="dash_page" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_9jhmcrcy6ra4aut2m4tjnwitt" columns="user_id" ref-table="user" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="uni_user_page" unique="true" columns="user_id,dash_page_id"/>
+      <index name="FK_58mvtfepy89jtl0eedbv2r2rb" unique="false" columns="dash_page_id"/>
+      <index name="FK_9jhmcrcy6ra4aut2m4tjnwitt" unique="false" columns="user_id"/>
+    </table>
+    <table name="user_profile" schema="" catalog="dash" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="profile_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <foreign-key name="FK_dnnx1gqmln4no0py3hn5fy334" columns="profile_id" ref-table="profile" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_ebc21hy5j7scdvcjt0jy6xxrv" columns="user_id" ref-table="user" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="uni_user_profile" unique="true" columns="user_id,profile_id"/>
+      <index name="FK_dnnx1gqmln4no0py3hn5fy334" unique="false" columns="profile_id"/>
+      <index name="FK_ebc21hy5j7scdvcjt0jy6xxrv" unique="false" columns="user_id"/>
+    </table>
+    <table name="user_region" schema="" catalog="dash" type="TABLE">
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="region_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <foreign-key name="FK_amxwalpbhxbb381dn90iyjl2l" columns="user_id" ref-table="user" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_hql0m5b9c4cje0fht1sb8olvg" columns="region_id" ref-table="region" ref-schema="" ref-catalog="dash" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="uni_user_region" unique="true" columns="user_id,region_id"/>
+      <index name="FK_amxwalpbhxbb381dn90iyjl2l" unique="false" columns="user_id"/>
+      <index name="FK_hql0m5b9c4cje0fht1sb8olvg" unique="false" columns="region_id"/>
+    </table>
+    <table name="youtube_campaigns" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="video_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="campaign" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="youtube_channels" schema="" catalog="dash" type="TABLE">
+      <column name="youtube_profile_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="views_count" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="comments_count" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="subscribers_count" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="video_count" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="channel_id"/>
+      <index name="index_youtube_channels_on_youtube_profile_id" unique="false" columns="youtube_profile_id"/>
+    </table>
+    <table name="youtube_metrics" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="video_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="metric" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="daily_value" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="captured_at" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="youtube_profiles" schema="" catalog="dash" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="brand_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="access_token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="refresh_token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="token_expires_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="index_youtube_profiles_on_brand_id" unique="false" columns="brand_id"/>
+      <index name="index_youtube_profiles_on_region_id" unique="false" columns="region_id"/>
+    </table>
+    <table name="youtube_videos" schema="" catalog="dash" type="TABLE">
+      <column name="channel_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="video_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="campaign" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="published_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="video_id"/>
+    </table>
+  </data-source>
+</component>

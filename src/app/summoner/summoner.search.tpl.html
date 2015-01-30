@@ -1,0 +1,10 @@
+<form class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+        <input id="summonerName" name="summonerName" ng-model="summonerName" type="text" class="form-control"
+               placeholder="Nome do Invocador" ggizi-search>
+                <span class="input-group-btn">
+                <a class="btn btn-default" ui-sref="summoner.info({summonerName: summonerName})">Procurar</a>
+                </span>
+    </div>
+</form>

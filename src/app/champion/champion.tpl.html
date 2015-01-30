@@ -1,0 +1,53 @@
+<div data-ng-controller="ChampionCtrl">
+
+
+
+        <h1>Champions</h1>
+
+        <div class="container">
+            <div class="row" id="summoner-form">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <select id="champion" ng-model="champion"
+                                ng-options="value.name for (key,value) in champions"
+                                class="form-control" ng-change="animateChampionDiv()">
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+
+
+        <div ng-if="showChampionDiv === true" class="panel panel-default animate-if" style="padding: 5px; margin-top: 5px;">
+            <div class="champion-lore">
+                <h1>{{champion.name}}</h1>
+                <img ng-src="http://ddragon.leagueoflegends.com/cdn/{{currentVersion}}/img/champion/{{champion.image.full}}"
+                     style="float: left; padding-right: 15px; padding-bottom: 15px;"/>
+                <br/>
+
+                <div ng-bind-html="champion.lore" style="text-align: justify;"></div>
+                <br/>
+
+            </div>
+            <div ng-controller="ChampionCarousel">
+                <div class="container-fluid">
+                    <carousel interval="myInterval" disable-ng-animate>
+                        <slide ng-repeat="skin in champion.skins" active="skin.active">
+                            <img ng-src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{champion.image.full | limitTo:(champion.image.full.length - 4)}}_{{skin.num}}.jpg "
+                                 alt="{{skin.name}}" style="margin: auto">
+
+                            <div class="carousel-caption">
+                                <h4>{{skin.name === 'default' ? 'Original' : skin.name}}</h4>
+                            </div>
+                        </slide>
+
+                    </carousel>
+                </div>
+            </div>
+        </div>
+
+
+
+</div>

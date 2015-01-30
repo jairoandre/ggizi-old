@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html ng-app="ggizi" ng-controller="AppCtrl" cg-busy="{promise:promise(),templateUrl:'assets/custom-template.html',backdrop:true}">
+<head>
+    <title ng-bind="pageTitle"></title>
+
+    <!-- social media tags -->
+    <meta charset="UTF-8">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@jairoandre">
+    <meta name="twitter:title" content="huelol">
+    <meta name="twitter:description"
+          content="ggizi! Tudo o que você sempre quis saber sobre o 'League of Legends', mas faltou dedo pra pesquisar.">
+    <meta name="twitter:creator" content="@jairoandre">
+    <meta name="twitter:image:src"
+          content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
+    <meta property="og:title" content="huelol"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://bit.ly/ngBoilerplate"/>
+    <meta property="og:image"
+          content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846"/>
+    <meta property="og:description"
+          content="Informações sobre partidas, campeões e tudo o que importa no League of Legends.">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- font awesome from BootstrapCDN -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>"/>
+    <% }); %>
+
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }); %>
+
+    <!-- it's stupid to have to load it here, but this is for the +1 button -->
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+        {
+            "parsetags"
+        :
+            "explicit"
+        }
+    </script>
+</head>
+<body>
+
+<header class="navbar navbar-inverse header" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+                    ng-click="menuCollapsed = ! menuCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">
+                ggizi
+                <small>
+                    <a href="http://github.com/ngbp/ngbp/blob/v<%= version %>-release/CHANGELOG.md">
+                        v<%= version %>
+                    </a>
+                </small>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" collapse="menuCollapsed">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active">
+                    <a href ui-sref="home" ng-click="menuCollapsed = true ">
+                        <i class="fa fa-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li ui-sref-active="active" ng-click="menuCollapsed = true ">
+                    <a href ui-sref="summoner">
+                        <i class="fa fa-user"></i>
+                        Summoner
+                    </a>
+                </li>
+                <li ui-sref-active="active" ng-click="menuCollapsed = true">
+                    <a href ui-sref="champion">
+                        <i class="fa fa-book"></i>
+                        Champion
+                    </a>
+                </li>
+                <li ui-sref-active="active" ng-click="menuCollapsed = true">
+                    <a href ui-sref="about">
+                        <i class="fa fa-info-circle"></i>
+                        About
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/ngbp/ngbp/issues" ng-click="menuCollapsed = true">
+                        <i class="fa fa-comments"></i>
+                        Support
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div ui-view="main" class="ggizi-content"></div>
+
+</div>
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="info">
+            <i class="fa fa-smile-o"></i>&nbsp;Desenvolvido por Kellthazar - 2015 - API version: {{ currentVersion }}
+        </div>
+
+    </div>
+</footer>
+</body>
+</html>
