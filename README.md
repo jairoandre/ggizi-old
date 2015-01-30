@@ -21,3 +21,15 @@ $ npm install
 $ bower install
 $ grunt watch
 ```
+# Ajustes
+
+Para que os estilos do bootstrap consigam referenciar corretamente os ícones, é necessário realizar uma pequena alteração no seguinte arquivo:
+
+```sh
+ggizi\vendor\bootstrap\less\variables
+```
+Alterar as seguinte varíavel:
+
+```sh
+@icon-font-path:          "../assets/";
+```
