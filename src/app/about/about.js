@@ -1,6 +1,5 @@
 angular.module( 'ggizi.about', [
   'ui.router',
-  'placeholders',
   'ui.bootstrap'
 ])
 
