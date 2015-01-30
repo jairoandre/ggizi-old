@@ -64,16 +64,18 @@ module.exports = {
         js: [
             'vendor/angular/angular.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
-            'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-ui-utils/modules/route/route.js',
             'vendor/angular-sanitize/angular-sanitize.js',
             'vendor/angular-animate/angular-animate.js',
-            'vendor/angular-busy/angular-busy.js'
+            'vendor/angular-loading-bar/build/loading-bar.js'
         ],
-        css: [
-            'vendor/angular-busy/angular-busy.css'
-        ],
-        assets: []
+        css: [],
+        assets: [
+            'vendor/bootstrap/fonts/glyphicons-halflings-regular.eot',
+            'vendor/bootstrap/fonts/glyphicons-halflings-regular.svg',
+            'vendor/bootstrap/fonts/glyphicons-halflings-regular.ttf',
+            'vendor/bootstrap/fonts/glyphicons-halflings-regular.woff'
+        ]
     },
 };

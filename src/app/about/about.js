@@ -1,6 +1,5 @@
 angular.module( 'ggizi.about', [
-  'ui.router',
-  'ui.bootstrap'
+  'ui.router'
 ])
 
 .config(function config( $stateProvider ) {
@@ -9,7 +8,7 @@ angular.module( 'ggizi.about', [
     views: {
       "main": {
         controller: 'AboutCtrl',
-        templateUrl: 'assets/custom-template.html'
+        templateUrl: 'about/about.tpl.html'
       }
     },
     data:{ pageTitle: 'What is It?' }

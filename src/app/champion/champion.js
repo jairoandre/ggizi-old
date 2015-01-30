@@ -1,6 +1,8 @@
-angular.module('ggizi.champion', ['ggizi', 'ggizi.static', 'ngAnimate',
+angular.module('ggizi.champion', [
+    'ggizi',
+    'ggizi.static',
     'ui.router',
-    'ui.bootstrap',
+    'ngAnimate',
     'ngSanitize'
 ])
 
@@ -9,49 +11,51 @@ angular.module('ggizi.champion', ['ggizi', 'ggizi.static', 'ngAnimate',
             url: '/champion',
             views: {
                 "main": {
-                    controller: 'ChampionCtrl',
                     templateUrl: 'champion/champion.tpl.html'
                 }
             },
-            data: {pageTitle: 'Campeões'}
+            data: {pageTitle: 'Champions'}
         });
     })
 
-    .controller('ChampionCtrl', function ChampionController($scope, $http, staticDataFactory, sharedPromise) {
+    .controller('ChampionCtrl', function ChampionController($scope, $http, $log, staticDataFactory) {
+
+        $log.info('ChampionCtrl instanced.');
 
         $scope.api_key = 'bfea1361-9fff-45f8-a8c0-1ff8025da116';
 
+        $scope.champions = null;
+
         $scope.champion = null;
 
-        $scope.champions = [];
+        $scope.selectedChampion = null;
 
         $scope.showChampionDiv = false;
 
         function init() {
 
-            sharedPromise.setPromise(staticDataFactory.getChampions().then(function (response) {
+            staticDataFactory.getChampions().then(function (response) {
                 $scope.champions = angular.fromJson(response.data).data;
-            }));
+            });
 
         }
 
         init();
 
-        $scope.animateChampionDiv = function () {
+        // Simula o loading de tela
+        $scope.changeChampion = function () {
 
-            $scope.showChampionDiv = false;
+            $scope.selectedChampion = null;
 
-            $http.get('http://httpbin.org/delay/0').then(function () {
-                if ($scope.champion !== null) {
-                    $scope.showChampionDiv = true;
-                }
+            $http.get('http://httpbin.org/delay/1').then(function () {
+                $scope.selectedChampion = $scope.champion;
             });
 
 
         };
 
     }
-).controller('ChampionCarousel', function ChampionCarousel($scope, $animate) {
+).controller('ChampionCarousel', function ChampionCarousel($scope) {
         $scope.myInterval = -1;
     }).directive('disableNgAnimate', ['$animate', function ($animate) {
         return {

@@ -1,7 +1,6 @@
 angular.module('ggizi.summoner', [
     'ggizi',
     'ui.router',
-    'ui.bootstrap',
     'ngAnimate',
     'ngSanitize'
 ])
@@ -84,9 +83,9 @@ angular.module('ggizi.summoner', [
 
     })
 
-    .controller('SummonerCtrl', function SummonerController($scope, $log, $stateParams, summonerFactory, gameFactory, sharedPromise) {
+    .controller('SummonerCtrl', function SummonerController($scope, $log, $stateParams, summonerFactory, gameFactory) {
 
-        $log.message('SummonerCtrl');
+        $log.log('SummonerCtrl instanced.');
 
         $scope.summonerName = $stateParams.summonerName;
 
@@ -110,14 +109,14 @@ angular.module('ggizi.summoner', [
 
         if ($scope.summonerName && $scope.summonerName.length > 0) {
             // Carrega as informações do invocador
-            sharedPromise.setPromise(summonerFactory.getByName($scope.summonerName).then(function (response) {
+            summonerFactory.getByName($scope.summonerName).then(function (response) {
 
                 $scope.summoner = angular.fromJson(response.data)[angular.lowercase($scope.summonerName)];
 
                 // Resolve a url do ícone de invocador
                 $scope.profileIconUrl = summonerFactory.profileIconUrl($scope.currentVersion, $scope.summoner.profileIconId);
 
-                sharedPromise.setPromise(gameFactory.getRecentGames($scope.summoner.id).then(function (response) {
+                gameFactory.getRecentGames($scope.summoner.id).then(function (response) {
                     $scope.recentGames = angular.fromJson(response.data);
                     angular.forEach($scope.recentGames.games, function(game){
 
@@ -130,8 +129,8 @@ angular.module('ggizi.summoner', [
 
                     });
 
-                }));
-            }));
+                });
+            });
         }
 
     })

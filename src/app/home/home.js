@@ -8,7 +8,6 @@ angular.module('ggizi.home', [
             url: '/home',
             views: {
                 "main": {
-                    controller: 'HomeCtrl',
                     templateUrl: 'home/home.tpl.html'
                 },
                 "summonerSearch@home": {
