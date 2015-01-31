@@ -1,9 +1,11 @@
 <div ng-controller="SummonerCtrl" class="container">
 
+    <h2>Summoner</h2>
+
     <div ui-view="summonerSearch" ng-if="!summonerName"></div>
 
     <div style="width: 100%; height: 128px; position: relative;" ng-if="summonerName">
-        <div style="width: 128px; height: 128px; position: absolute; top: 0; left: 0;">
+        <div style="width: 128px; height: 128px; position: absolute; top: 0; left: 0;" ng-if="profileIconUrl" class="animate-if">
             <img ng-src="{{ profileIconUrl }}" style="float: left;"/>
 
             <div style="position: absolute; bottom: 0px; right: 0px; padding: 5px; font-size: 20px; color: #ffffff; background-color: #000000;">
@@ -14,10 +16,11 @@
             {{ summoner.name }}
         </div>
     </div>
-    <div>
-        <h2>Histórico de Partidas</h2>
+    <div ng-if="recentGames" class="animate-if">
 
-        <div ng-repeat="game in recentGames.games">
+        <h3>Histórico de Partidas</h3>
+
+        <div ng-if="showHistory" ng-repeat="game in recentGames.games" class="animate-if">
             <div style="background-color: red; color: white;">
 
                 {{game.gameMode}} - {{game.gameType}} - {{ game.createDate | date: "dd/MM/yyyy 'às' h:mma" }}
@@ -28,16 +31,15 @@
                 <div style="background-color: #000066; color: white;">
 
                     <div style="background-color: {{ game.teamId === 100 ? 'blue' : 'purple' }}">
-                        <img ng-src="{{ squareMap[game.championId] }}" width="40" height="40"> {{
-                        summoner.name }}
+                        <img ng-src="{{ squareMap[game.championId] }}" width="40" height="40"> {{ summoner.name }}
 
                     </div>
 
                     <div ng-repeat="player in game.fellowPlayers | orderBy : 'teamId' : game.teamId===200">
 
                         <div style="background-color: {{ player.teamId === 100 ? 'blue' : 'purple' }}">
-                            <img ng-src="{{ squareMap[player.championId] }}" width="40" height="40"> {{
-                            player.summonerId }}
+                            <img ng-src="{{ squareMap[player.championId] }}" width="40" height="40">
+                            {{ playersInfoMap[player.summonerId].name }}
                         </div>
 
                     </div>

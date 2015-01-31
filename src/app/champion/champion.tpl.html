@@ -1,7 +1,7 @@
-<div ng-controller="ChampionCtrl">
+<div ng-controller="ChampionCtrl" class="container">
 
 
-    <h1>Champions</h1>
+    <h2>Champions</h2>
 
     <div class="container">
         <div class="row animate-if" id="summoner-form" ng-if="champions">
@@ -16,8 +16,8 @@
     </div>
 
     <div ng-if="selectedChampion" class="panel panel-default animate-if" style="padding: 5px; margin-top: 5px;">
-        <div class="champion-lore">
-            <h1>{{selectedChampion.name}}</h1>
+        <div class="champion-lore" style="min-height: 200px;">
+            <h3>{{selectedChampion.name}}</h3>
             <img ng-src="http://ddragon.leagueoflegends.com/cdn/{{currentVersion}}/img/champion/{{selectedChampion.image.full}}"
                  style="float: left; padding-right: 15px; padding-bottom: 15px;"/>
             <br/>
