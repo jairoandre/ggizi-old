@@ -33,3 +33,7 @@ Alterar as seguinte varíavel:
 ```sh
 @icon-font-path:          "../assets/";
 ```
+
+O projeto faz uso do ng-boilerplate:
+
+http://joshdmiller.github.io/ng-boilerplate/#/home
