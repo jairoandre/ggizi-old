@@ -16,6 +16,9 @@ angular.module('ggizi.summoner', [
                     },
                     "summonerSearch@summoner": {
                         templateUrl: 'summoner/summoner.search.tpl.html'
+                    },
+                    "summonerHistory@summoner": {
+                        templateUrl: 'summoner/summoner.history.tpl.html'
                     }
                 },
                 data: {pageTitle: 'Summoner'}
@@ -31,52 +34,45 @@ angular.module('ggizi.summoner', [
 
         var factory = {};
 
-        var summonerBaseUrl = 'https://br.api.pvp.net/api/lol/br/v1.4/summoner/';
-
-        var apiKey = 'bfea1361-9fff-45f8-a8c0-1ff8025da116';
-
-        var apiKeySufix = '?api_key=' + apiKey;
-
         /**
          * Recupera um summoner dado seu nome.
          * @param name
          * @returns {HttpPromise}
          */
-        factory.getByName = function (name) {
-            var url = summonerBaseUrl + 'by-name/' + name + '?api_key=' + apiKey;
-            return $http.get(url);
+        factory.summonerByName = function (name) {
+            return $http.get('/api/summonerByName/' + name);
         };
 
         /**
-         * Transforma um mapeamento (id,id) de summoners em uma lista de string de ids, separados por vírgulas, e com a quantidade máxima de 40 por index.
-         * Este tamanho é o máximo que a api aceita para recuperação de múltiplos summoners.
+         * Transforma um mapeamento (id,id) em uma lista de string de ids, separados por vírgulas, e com a quantidade máxima de 40 por index.
+         * Este tamanho é o máximo que a api aceita para recuperação de múltiplos registros.
          *
-         * @param playersId
+         * @param idsMap
          * @returns {Array}
          */
-        factory.transformPlayersIdMapToList = function (playersId) {
+        factory.transformIdMapToList = function (idsMap) {
             var i = 0;
             var j = 0;
             var ids = '';
-            var idsList = [];
+            var summonersIdList = [];
 
-            angular.forEach(playersId, function (v, k) {
+            angular.forEach(idsMap, function (v, k) {
 
                 ids += k;
                 if (j++ < 39) {
                     ids += ',';
                 } else {
-                    idsList[i++] = ids;
+                    summonersIdList[i++] = ids;
                     j = 0;
                     ids = '';
                 }
             });
 
             if(ids !== ''){
-                idsList[i] = ids;
+                summonersIdList[i] = ids;
             }
 
-            return idsList;
+            return summonersIdList;
         };
 
         /**
@@ -84,15 +80,13 @@ angular.module('ggizi.summoner', [
          *
          * @param ids
          */
-        factory.playersByIds = function (ids) {
-            return $http.get(summonerBaseUrl + ids + apiKeySufix);
+        factory.summonersByIds = function (ids) {
+            return $http.get('/api/summonersByIds/' + ids);
 
         };
 
-        factory.championById = function (championId) {
-            var region = 'br';
-            var url = 'https://br.api.pvp.net/api/lol/static-data/' + region + '/v1.2/champion/' + championId + '?champData=image&api_key=' + apiKey;
-            return $http.get(url);
+        factory.championsSquareMap = function (){
+          return $http.get('/api/championsSquareMap');
         };
 
         factory.profileIconUrl = function (version, iconUrl) {
@@ -113,15 +107,8 @@ angular.module('ggizi.summoner', [
 
         var factory = {};
 
-        var baseUrl = 'https://br.api.pvp.net/api/lol/br/v1.3/game/by-summoner/';
-
-        var sufixUrl = '/recent';
-
-        var apiKey = 'bfea1361-9fff-45f8-a8c0-1ff8025da116';
-
-        factory.getRecentGames = function (summonerId) {
-            var url = baseUrl + summonerId + sufixUrl + '?api_key=' + apiKey;
-            return $http.get(url);
+        factory.recentGamesBySummonerId = function (summonerId) {
+            return $http.get('http://localhost:8080/api/recentGamesBySummonerId/' + summonerId);
         };
 
         return factory;
@@ -137,63 +124,66 @@ angular.module('ggizi.summoner', [
 
         $scope.squareMap = {};
 
-        $scope.playersInfoMap = {};
+        $scope.summonersInfoMap = {};
 
-        $scope.playersId = {};
+        $scope.championsImageMap = {};
+
+        $scope.summonersIdMap = {};
 
         $scope.showHistory = false;
 
-        function addOnSquareMap(championId) {
-            if (!$scope.squareMap[championId]) {
-                summonerFactory.championById(championId).then(function (response) {
-                    $scope.squareMap[championId] = summonerFactory.championSquareUrl(angular.fromJson(response.data).image.full, $scope.currentVersion);
-                });
-            }
-        }
+        $scope.profileIconUrl = null;
 
-        function addOnPlayersId(playerId) {
-            if (!$scope.playersId[playerId]) {
-                $scope.playersId[playerId] = playerId;
+
+        function addOnPlayersIdMap(playerId) {
+            if (!$scope.summonersIdMap[playerId]) {
+                $scope.summonersIdMap[playerId] = playerId;
             }
         }
 
         if ($scope.summonerName && $scope.summonerName.length > 0) {
-            // Carrega as informações do invocador
-            summonerFactory.getByName($scope.summonerName).then(function (response) {
 
-                $scope.summoner = angular.fromJson(response.data)[angular.lowercase($scope.summonerName)];
+            // Carrega as informações do invocador (Primeiro request)
+            summonerFactory.summonerByName($scope.summonerName).then(function (response) {
+
+                summonerFactory.championsSquareMap().then(function (r){
+                    $scope.championsSquareMap = angular.fromJson(r.data);
+                });
+
+                $scope.summoner = angular.fromJson(response.data);
 
                 // Resolve a url do ícone de invocador
                 $scope.profileIconUrl = summonerFactory.profileIconUrl($scope.currentVersion, $scope.summoner.profileIconId);
 
-                // Recupera os jogos recentes do invocador
-                gameFactory.getRecentGames($scope.summoner.id).then(function (response) {
+                // Recupera os jogos recentes do invocador (Segundo Request)
+                // TODO: Refatorar para ser On Demand
+                gameFactory.recentGamesBySummonerId($scope.summoner.id).then(function (response) {
 
                     $scope.recentGames = angular.fromJson(response.data);
 
-                    angular.forEach($scope.recentGames.games, function (game) {
-
-                        addOnSquareMap(game.championId);
+                    // Para cada partida, preenche os maps dos champs e dos summoners que participaram.
+                    angular.forEach($scope.recentGames, function (game) {
 
                         // Percorre a lista de jogadores que participaram do jogo
                         angular.forEach(game.fellowPlayers, function (player) {
-                            addOnSquareMap(player.championId);
-                            addOnPlayersId(player.summonerId);
+                            addOnPlayersIdMap(player.summonerId);
                         });
 
                     });
 
-                    $scope.idsList = summonerFactory.transformPlayersIdMapToList($scope.playersId);
+                    // Transforma os mapeamentos para listas com o tamanho máximo permitido (40) por request
+                    $scope.summonersIdList = summonerFactory.transformIdMapToList($scope.summonersIdMap);
 
-
-                    angular.forEach($scope.idsList, function (ids) {
-                        summonerFactory.playersByIds(ids).then(function(r){
-                            $scope.playersInfoMap = angular.extend({}, $scope.playersInfoMap, angular.fromJson(r.data));
+                    // Para cada grupo de 40 ids, recupera as informações do grupo.
+                    angular.forEach($scope.summonersIdList, function (ids) {
+                        summonerFactory.summonersByIds(ids).then(function(r){
+                            $scope.summonersInfoMap = angular.extend({}, $scope.summonersInfoMap, angular.fromJson(r.data));
                             $scope.showHistory = true;
                         });
                     });
+
                 });
-            }); // getByName
+            }); // summonerByName
         } // if
     })
 

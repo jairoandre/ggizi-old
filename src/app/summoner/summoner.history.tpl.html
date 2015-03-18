@@ -1,0 +1,35 @@
+<div ng-if="recentGames" class="animate-if">
+
+    <h3>Histórico de Partidas</h3>
+
+    <div ng-repeat="game in recentGames">
+        <div style="background-color: red; color: white;">
+
+            {{game.gameMode}} - {{game.gameType}} - {{ game.createDate | date: "dd/MM/yyyy 'às' h:mma" }}
+
+        </div>
+        <div style="background-color: forestgreen;">
+
+            <div style="background-color: #000066; color: white;">
+
+                <div style="background-color: {{ game.teamId === 100 ? 'blue' : 'purple' }}">
+                    <img ng-src="{{ championsSquareMap[game.championId] }}" width="40" height="40"> {{ summoner.name }}
+
+                </div>
+
+                <div ng-repeat="player in game.fellowPlayers | orderBy : 'teamId' : game.teamId===200">
+
+                    <div style="background-color: {{ player.teamId === 100 ? 'blue' : 'purple' }}">
+                        <img ng-src="{{ championsSquareMap[player.championId] }}" width="40" height="40">
+                        {{ summonersInfoMap[player.summonerId].name }}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <br/>
+
+
+    </div>
+</div>

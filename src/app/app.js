@@ -28,8 +28,8 @@ angular.module('ggizi', [
 
         $scope.currentVersion = null;
 
-        staticDataFactory.currentVersionPromise().then(function (response) {
-            $scope.currentVersion = angular.fromJson(response.data)[0];
+        staticDataFactory.currentVersion().then(function (response) {
+            $scope.currentVersion = angular.fromJson(response.data);
             $scope.profileIconUrl = staticDataFactory.ddragonUrlPrefix() + $scope.currentVersion + staticDataFactory.profileIconPath();
         });
 

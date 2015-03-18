@@ -22,8 +22,6 @@ angular.module('ggizi.champion', [
 
         $log.info('ChampionCtrl instanced.');
 
-        $scope.api_key = 'bfea1361-9fff-45f8-a8c0-1ff8025da116';
-
         $scope.champions = null;
 
         $scope.champion = null;
@@ -35,7 +33,7 @@ angular.module('ggizi.champion', [
         function init() {
 
             staticDataFactory.getChampions().then(function (response) {
-                $scope.champions = angular.fromJson(response.data).data;
+                $scope.champions = angular.fromJson(response.data);
             });
 
         }

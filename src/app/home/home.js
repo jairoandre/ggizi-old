@@ -13,7 +13,6 @@ angular.module('ggizi.home', [
                 "summonerSearch@home": {
                     templateUrl: 'summoner/summoner.search.tpl.html'
                 }
-
             },
             data: {pageTitle: 'Home'}
         });
