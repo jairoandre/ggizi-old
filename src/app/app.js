@@ -1,3 +1,6 @@
+//var apiPath = 'http://localhost:8080/api/';
+var apiPath = 'api/';
+
 angular.module('ggizi', [
     'templates-app',
     'templates-common',

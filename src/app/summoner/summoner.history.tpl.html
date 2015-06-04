@@ -1,35 +1,82 @@
 <div ng-if="recentGames" class="animate-if">
 
-    <h3>Histórico de Partidas</h3>
 
-    <div ng-repeat="game in recentGames">
-        <div style="background-color: red; color: white;">
+    <div class="summoner-history-filter">
+        <form class="form-inline summoner-history-form" role="form">
+            <div class="form-group animate-if">
+                <label for="option">Filtro:</label>
+                <select id="option" ng-model="$parent.historyType" ng-options="k as v for (k,v) in historyTypes"
+                        class="form-control" ng-change="$parent.changeHistoryType()">
+                </select>
+            </div>
+        </form>
+    </div>
 
-            {{game.gameMode}} - {{game.gameType}} - {{ game.createDate | date: "dd/MM/yyyy 'às' h:mma" }}
+    <div ng-repeat="game in recentGames | filter : { subType : $parent.historyType === 'ALL' ? '' : $parent.historyType }"
+         class="{{ game.stats.win ? 'summoner-winner' : 'summoner-loser' }}">
 
+
+        <div class="summoner-div-header">
+            {{gameTypeLabels[game.subType]}} - {{game.createDate | date: "dd/MM/yyyy 'às' h:mma"}}
         </div>
-        <div style="background-color: forestgreen;">
 
-            <div style="background-color: #000066; color: white;">
 
-                <div style="background-color: {{ game.teamId === 100 ? 'blue' : 'purple' }}">
-                    <img ng-src="{{ championsSquareMap[game.championId] }}" width="40" height="40"> {{ summoner.name }}
+        <div class="summoner-history-champion-square">
+            <img ng-src="{{ championsSquareMap[game.championId] }}" width="100" height="100">
+        </div>
 
-                </div>
+        <div class="summoner-kda">
+            <div class="summoner-kda-div">
+                <span class="kills">{{ game.stats.championsKilled }}</span> /
+                <span class="deaths">{{ game.stats.numDeaths }}</span> /
+                <span class="assists">{{ game.stats.assists }}</span>
+                <br/>
+                <span class="{{ game.stats.numDeaths === 0 ? 'perfect' : 'kda' + ((game.stats.championsKilled + game.stats.assists)/(game.stats.numDeaths) | number : 0 )}}">
+                {{ game.stats.numDeaths === 0 ? 'Perfeito' : ((game.stats.championsKilled + game.stats.assists)/(game.stats.numDeaths) | number : 2 )}} KDA
+                </span>
+            </div>
+        </div>
 
-                <div ng-repeat="player in game.fellowPlayers | orderBy : 'teamId' : game.teamId===200">
+        <div class="summoner-spells">
+            <div ng-repeat="spell in [game.spell1,game.spell2]" class="summoner-spell-square">
+                <img ng-src="{{ spellsSquareMap[spell] }}" width="40" height="40">
+            </div>
+        </div>
 
-                    <div style="background-color: {{ player.teamId === 100 ? 'blue' : 'purple' }}">
-                        <img ng-src="{{ championsSquareMap[player.championId] }}" width="40" height="40">
-                        {{ summonersInfoMap[player.summonerId].name }}
-                    </div>
+        <div class="summoner-itens">
 
-                </div>
+            <div ng-repeat="item in [game.stats.item0,game.stats.item1,game.stats.item2,game.stats.item3,game.stats.item4,game.stats.item5] track by $index" class="summoner-item">
+
+                <img ng-src="{{ 'http://ddragon.leagueoflegends.com/cdn/' + currentVersion + '/img/item/' + item + '.png' }}"
+                     width="30" height="30" ng-if="item">
+
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="30" height="30" ng-if="!item">
+
             </div>
 
         </div>
-        <br/>
+
+
+        <!--<div style="background-color: forestgreen;">
+
+            <div style="background-color: #000066; color: white;">
+
+            </div>
+
+            <div ng-repeat="player in game.fellowPlayers | orderBy : 'teamId' : game.teamId===200">
+
+                <div style="background-color: {{ player.teamId === 100 ? 'blue' : 'purple' }}">
+                    <img ng-src="{{ championsSquareMap[player.championId] }}" width="40" height="40">
+                    {{ summonersInfoMap[player.summonerId].name }}
+                </div>
+
+            </div>
+        </div>-->
+
+        <div class="clearfix"></div>
 
 
     </div>
+
+
 </div>

@@ -1,7 +1,7 @@
 <div ng-controller="ChampionCtrl" class="container">
 
 
-    <h2>Champions</h2>
+    <h2>Campeão</h2>
 
     <div class="container">
         <div class="row animate-if" id="summoner-form" ng-if="champions">
@@ -33,7 +33,6 @@
                     <slide ng-repeat="skin in selectedChampion.skins" active="skin.active">
                         <img ng-src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{selectedChampion.image.full | limitTo:(selectedChampion.image.full.length - 4)}}_{{skin.num}}.jpg "
                              alt="{{skin.name}}" style="margin: auto">
-
                         <div class="carousel-caption">
                             <h4>{{skin.name === 'default' ? 'Original' : skin.name}}</h4>
                         </div>

@@ -33,14 +33,18 @@ angular.module('ggizi.summoner', [
     .factory('summonerFactory', function ($http, $q, $log) {
 
         var factory = {};
-
+        
         /**
          * Recupera um summoner dado seu nome.
          * @param name
          * @returns {HttpPromise}
          */
         factory.summonerByName = function (name) {
-            return $http.get('/api/summonerByName/' + name);
+            return $http.get(apiPath + 'summonerByName/' + name);
+        };
+
+        factory.summonerTierInfo = function(id) {
+          return $http.get(apiPath + 'summonerTierInfo/' + id);
         };
 
         /**
@@ -81,12 +85,16 @@ angular.module('ggizi.summoner', [
          * @param ids
          */
         factory.summonersByIds = function (ids) {
-            return $http.get('/api/summonersByIds/' + ids);
+            return $http.get(apiPath + 'summonersByIds/' + ids);
 
         };
 
         factory.championsSquareMap = function (){
-          return $http.get('/api/championsSquareMap');
+          return $http.get(apiPath + 'championsSquareMap');
+        };
+
+        factory.spellsSquareMap = function (){
+            return $http.get(apiPath + 'summonerSpellsImageMap');
         };
 
         factory.profileIconUrl = function (version, iconUrl) {
@@ -96,6 +104,10 @@ angular.module('ggizi.summoner', [
 
         factory.championSquareUrl = function (squareUrl, currentVersion) {
             return 'http://ddragon.leagueoflegends.com/cdn/' + currentVersion + '/img/champion/' + squareUrl;
+        };
+
+        factory.gameTypeLabels = function(){
+            return $http.get(apiPath + 'gameTypeLabels');
         };
 
         return factory;
@@ -108,7 +120,7 @@ angular.module('ggizi.summoner', [
         var factory = {};
 
         factory.recentGamesBySummonerId = function (summonerId) {
-            return $http.get('http://localhost:8080/api/recentGamesBySummonerId/' + summonerId);
+            return $http.get(apiPath + 'recentGamesBySummonerId/' + summonerId);
         };
 
         return factory;
@@ -134,6 +146,20 @@ angular.module('ggizi.summoner', [
 
         $scope.profileIconUrl = null;
 
+        $scope.historyType = 'ALL';
+
+        $scope.historyTypes = {};
+
+        $scope.historyTypes['ALL'] = "Todos";
+        $scope.historyTypes['^RANKED'] = "Ranked";
+
+        $scope.errorMessage = null;
+
+
+        summonerFactory.gameTypeLabels().then(function(r){
+            $scope.gameTypeLabels = angular.fromJson(r.data);
+        });
+
 
         function addOnPlayersIdMap(playerId) {
             if (!$scope.summonersIdMap[playerId]) {
@@ -146,23 +172,31 @@ angular.module('ggizi.summoner', [
             // Carrega as informações do invocador (Primeiro request)
             summonerFactory.summonerByName($scope.summonerName).then(function (response) {
 
+                $scope.summoner = angular.fromJson(response.data);
+
                 summonerFactory.championsSquareMap().then(function (r){
                     $scope.championsSquareMap = angular.fromJson(r.data);
                 });
 
-                $scope.summoner = angular.fromJson(response.data);
+                summonerFactory.spellsSquareMap().then(function (r){
+                    $scope.spellsSquareMap = angular.fromJson(r.data);
+                });
+
+                summonerFactory.summonerTierInfo($scope.summoner.id).then(function (r){
+                    $scope.summonerTierInfo = angular.fromJson(r.data);
+                });
 
                 // Resolve a url do ícone de invocador
                 $scope.profileIconUrl = summonerFactory.profileIconUrl($scope.currentVersion, $scope.summoner.profileIconId);
 
                 // Recupera os jogos recentes do invocador (Segundo Request)
-                // TODO: Refatorar para ser On Demand
                 gameFactory.recentGamesBySummonerId($scope.summoner.id).then(function (response) {
 
                     $scope.recentGames = angular.fromJson(response.data);
+                    $scope.showHistory = true;
 
                     // Para cada partida, preenche os maps dos champs e dos summoners que participaram.
-                    angular.forEach($scope.recentGames, function (game) {
+                    /*angular.forEach($scope.recentGames, function (game) {
 
                         // Percorre a lista de jogadores que participaram do jogo
                         angular.forEach(game.fellowPlayers, function (player) {
@@ -178,11 +212,14 @@ angular.module('ggizi.summoner', [
                     angular.forEach($scope.summonersIdList, function (ids) {
                         summonerFactory.summonersByIds(ids).then(function(r){
                             $scope.summonersInfoMap = angular.extend({}, $scope.summonersInfoMap, angular.fromJson(r.data));
-                            $scope.showHistory = true;
+
                         });
-                    });
+                    });*/
 
                 });
+            }, function(response){
+                $log.error(response.status);
+                $scope.errorMessage = "Invocador não encontrado";
             }); // summonerByName
         } // if
     })

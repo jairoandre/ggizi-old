@@ -9,11 +9,11 @@ angular.module('ggizi.static', [])
         var factory = {};
 
         factory.getChampions = function () {
-            return $http.get('/api/championList');
+            return $http.get(apiPath + 'championList');
         };
 
         factory.currentVersion = function () {
-            return $http.get("/api/currentVersion");
+            return $http.get(apiPath + 'currentVersion');
         };
 
         factory.ddragonUrlPrefix = function () {

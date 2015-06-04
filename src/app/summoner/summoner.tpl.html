@@ -1,29 +1,56 @@
 <div ng-controller="SummonerCtrl" class="container">
 
-    <h2>Summoner</h2>
+    <h2>Invocador</h2>
 
     <div ui-view="summonerSearch"></div>
 
-    <div style="width: 100%; height: 100px; position: relative;" ng-if="summonerName">
-        <div style="width: 100px; height: 100px; position: absolute; top: 0; left: 0;" ng-if="profileIconUrl"
-             class="animate-if">
-            <img ng-src="{{ profileIconUrl }}" style="float: left;" width="100" height="100"/>
+    <div class="alert alert-danger animate-if" role="alert" ng-if="errorMessage">{{errorMessage}}</div>
 
-            <div style="position: absolute; bottom: 2px; right: 2px; padding: 5px; font-size: 10px; color: #ffffff; background-color: #000000; opacity: 0.7">
+    <div class="summoner-profile-div animate-if" ng-if="summonerName">
+        <div ng-if="profileIconUrl" class="summoner-profile-div animate-if">
+            <img ng-src="{{ profileIconUrl }}" style="float: left; border-radius: 10px;" width="100"
+                 height="100"/>
+
+            <div class="summoner-lvl-square">
                 {{summoner.summonerLevel}}
             </div>
-        </div>
-        <div style="position: absolute; left: 100px; padding-left: 5px; line-height: 50px; font-size: 25px; color: #ffffff; text-shadow: 10px 4px 10px #1d9d74, 2px 2px 2px rgba(0, 0, 0, 0.15);">
-            {{ summoner.name }}
+            <div class="summoner-name-display">
+                {{ summoner.name }}
+            </div>
+            <div class="summoner-ranked-label {{summonerTierInfo['rankedSoloTier']}}">
+                {{ summonerTierInfo['rankedSoloLabel'] }}
+            </div>
         </div>
     </div>
-    <br/>
-    <div ng-if="showHistory" class="container panel animate-if" style="min-height: 200px; background: #f3f3f3;">
+
+    <div class="clearfix" style="margin: 5px 0;"></div>
+
+    <div class="container summoner-tab-container animate-if" ng-if="showHistory">
         <tabset>
             <tab heading="Resumo" select="tab1 = true; tab2 = false; tab3 = false">
-                <div class="container">Resumo</div>
+                <div class="row" style="padding-top: 5px;">
+                    <div class="col-sm-4" style="text-align: center;" ng-if="summonerTierInfo" class="animate-if">
+                        <div class="summoner-tier-head">
+                            Team 3x3
+                        </div>
+                        <img ng-src="{{ summonerTierInfo['ranked3x3Url'] }}" style="display: inline-block;"
+                             />
+                    </div>
+                    <div class="col-sm-4" style="text-align: center;" ng-if="summonerTierInfo" class="animate-if">
+                        <div class="summoner-tier-head">
+                            Solo
+                        </div>
+                        <img ng-src="{{ summonerTierInfo['rankedSoloUrl'] }}" style="display: inline-block;" />
+                    </div>
+                    <div class="col-sm-4" style="text-align: center;" ng-if="summonerTierInfo" class="animate-if">
+                        <div class="summoner-tier-head">
+                            Team 5x5
+                        </div>
+                        <img ng-src="{{ summonerTierInfo['ranked5x5Url'] }}" style="display: inline-block;"/>
+                    </div>
+                </div>
             </tab>
-            <tab heading="History" select="tab1 = false; tab2 = true; tab3 = false">
+            <tab heading="Histórico" select="tab1 = false; tab2 = true; tab3 = false">
                 <div ui-view="summonerHistory"></div>
             </tab>
         </tabset>
